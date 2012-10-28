@@ -1,8 +1,9 @@
 #! /usr/bin/env ruby
 # -*- coding: utf-8; mode: ruby -*-
 
-# inspired by nltk.corpus.reader.wordnet.morphy
-# http://nltk.googlecode.com/svn/trunk/doc/api/nltk.corpus.reader.wordnet-pysrc.html#WordNetCorpusReader.morphy
+# Inspired by nltk.corpus.reader.wordnet.morphy http://nltk.googlecode.com/svn/trunk/doc/api/nltk.corpus.reader.wordnet-pysrc.html#WordNetCorpusReader.morphy
+# Original code posted by mtbr at http://d.hatena.ne.jp/mtbr/20090303/prfrnlprubyWordNetbasedlemmatizer
+
 
 require "lemmatizer/version"
 require "stringio"

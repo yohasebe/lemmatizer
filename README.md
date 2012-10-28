@@ -1,7 +1,9 @@
 lemmatizer
 ==========
 
-Lemmatizer for text in English.  Inspired by Python's nltk.corpus.reader.wordnet.morphy package
+Lemmatizer for text in English.  Inspired by Python's [nltk.corpus.reader.wordnet.morphy](orpusReader.morphy) package.
+
+Based on code posted by mtbr at his blog entry [WordNet-based lemmatizer](http://d.hatena.ne.jp/mtbr/20090303/prfrnlprubyWordNetbasedlemmatizer)
 
 Installation
 ------------
