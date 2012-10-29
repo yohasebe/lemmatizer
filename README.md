@@ -33,7 +33,7 @@ Limitations
     # Lemmatizer leaves alone words that its dictionary does not contain.  This keeps proper names such as "James" intact.
     p lem.lemma("MacBooks", :noun) # => "MacBooks" 
     
-	# If an inflected form of word is included as a lemma in the word list, lemmatizer may not give the expected result.
+	# If an inflected form is included as a lemma in the word index, lemmatizer may not give an expected result.
     p lem.lemma("higher", :adj) # => "higher" not "high"!
 	
 	# The above has to happen because "higher" is itself an entry word listed in dict/index.adj .
