@@ -23,11 +23,10 @@ class Lemmatizer
 
 	MORPHOLOGICAL_SUBSTITUTIONS = {
 		:noun => [['s', ''], ['ses', 's'], ['ves', 'f'], ['xes', 'x'],
-								['zes', 'z'], ['ches', 'ch'], ['shes', 'sh'],
-							 ['men', 'man'], ['ies', 'y']],
+							['zes', 'z'], ['ches', 'ch'], ['shes', 'sh'],
+					    ['men', 'man'], ['ies', 'y']],
 		:verb => [['s', ''], ['ies', 'y'], ['es', 'e'], ['es', ''],
-							 ['ed', 'e'], ['ed', ''], ['ing', 'e'], ['ing', '']],
-
+						  ['ed', 'e'], ['ed', ''], ['ing', 'e'], ['ing', '']],
 		:adj =>  [['er', ''], ['est', ''], ['er', 'e'], ['est', 'e']],
 		:adv =>  []}
 
@@ -39,7 +38,7 @@ class Lemmatizer
 			@exceptions[x] = {}
 		end
 		if files then
-			files.each_pair do |pos,pair|
+			files.each_pair do |pos, pair|
 				load_wordnet_files(pos, pair[0], pair[1])
 			end
 		end
@@ -65,34 +64,13 @@ class Lemmatizer
 
 		open_file(exc) do |io|
 			io.each_line do |line|
-				w,s = line.split(/\s+/)
+				w, s = line.split(/\s+/)
 				@exceptions[pos][w] ||= []
 				@exceptions[pos][w] << s
 			end
 		end
 	end
 
-	def each_lemma(form, pos)
-		if lemma = @exceptions[pos][form] then
-			lemma.each{|x |yield x}
-		end
-		if pos == :noun and form.endwith('ful')
-			each_lemma(form[0,form.length-3], pos) do |x|
-				yield x+'ful'
-			end
-		else
-			_each_substitutions(form, pos) do|x|
-				yield x
-			end
-		end
-	end
-
-	def lemma(form,pos)
-		each_lemma(form, pos) do |x|
-			return x
-		end
-		return form
-	end
 	def _each_substitutions(form, pos)
 		if lemma = @wordlists[pos][form] then
 			yield lemma
@@ -106,4 +84,34 @@ class Lemmatizer
 			end
 		end
 	end
+
+	def each_lemma(form, pos)
+		if lemma = @exceptions[pos][form] then
+			lemma.each{|x |yield x}
+		end
+		if pos == :noun and form.endwith('ful')
+			each_lemma(form[0, form.length-3], pos) do |x|
+				yield x+'ful'
+			end
+		else
+			_each_substitutions(form, pos) do|x|
+				yield x
+			end
+		end
+	end
+
+	def lemma(form, pos = nil)
+    if !pos
+      [:verb, :noun, :adj, :adv].each do |p|
+        result = lemma(form, p)
+        return result unless result == form
+      end
+      return form
+    end    
+		each_lemma(form, pos) do |x|
+			return x
+		end
+		return form
+	end
+  
 end

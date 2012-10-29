@@ -44,6 +44,23 @@ describe "Lemmatizer" do
 
 			result_r2 = @lemmatizer.lemma("best", :adv)
 			result_r2.should_not == "good"
+      
+      # Lemmatizer give a result even when no pos is given, by assuming it to be :verb, :noun, :adv, or :adj.
+			result_1 = @lemmatizer.lemma("plays")
+			result_1.should == "play"
+
+			result_2 = @lemmatizer.lemma("oxen")
+			result_2.should == "ox"
+      
+			result_3 = @lemmatizer.lemma("higher")
+			result_3.should_not == "high" # since 'higher' is itself contained in the adj list.
+      
+      # test cases for words used in README 
+			result_t1 = @lemmatizer.lemma("fired")
+			result_t1.should == "fire"
+
+			result_t2 = @lemmatizer.lemma("slower")
+			result_t2.should == "slow"      
 		end
 	end
 
