@@ -55,6 +55,9 @@ describe "Lemmatizer" do
 			result_3 = @lemmatizer.lemma("higher")
 			result_3.should_not == "high" # since 'higher' is itself contained in the adj list.
       
+			result_2 = @lemmatizer.lemma("asdfassda") # non-existing word
+			result_2.should == "asdfassda"
+      
       # test cases for words used in README 
 			result_t1 = @lemmatizer.lemma("fired")
 			result_t1.should == "fire"
