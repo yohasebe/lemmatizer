@@ -1,18 +1,14 @@
-#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 require 'lemmatizer'
 
 describe "Lemmatizer" do
-	it "contains lemmatizing functions:" do
-	end
-
 	before do
 		@lemmatizer = Lemmatizer.new
 	end
 
-	describe "lemma" do
+	describe "#lemma" do
 		it "takes a word form and its part-of-speech symbol (:noun, :verb, :adj, :adv) and then returns its lemma form" do
 			result_n1 = @lemmatizer.lemma("analyses", :noun)
 			result_n1.should == "analysis"
@@ -66,5 +62,4 @@ describe "Lemmatizer" do
 			result_t2.should == "slow"      
 		end
 	end
-
 end
