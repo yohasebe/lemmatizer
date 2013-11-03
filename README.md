@@ -41,3 +41,14 @@ p lem.lemma("higher", :adj) # => "higher" not "high"!
 # The above has to happen because "higher" is itself an entry word listed in dict/index.adj .
 # Modify dict/index.{noun|verb|adj|adv} if necessary.
 ```
+
+Author
+------
+* Yoichiro Hasebe <yohasebe@gmail.com>
+
+Thanks for assistance and contributions:
+* Vladimir Ivic <http://vladimirivic.com>
+
+License
+-------
+Licensed under the MIT license.
