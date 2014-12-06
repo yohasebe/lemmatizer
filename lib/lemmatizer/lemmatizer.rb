@@ -3,52 +3,52 @@
 module Lemmatizer
   class Lemmatizer
     DATA_DIR = File.expand_path('..', File.dirname(__FILE__))
-    
+
     WN_FILES = {
       :noun => [
-        DATA_DIR + '/dict/index.noun', 
+        DATA_DIR + '/dict/index.noun',
         DATA_DIR + '/dict/noun.exc'
       ],
       :verb => [
-        DATA_DIR + '/dict/index.verb', 
+        DATA_DIR + '/dict/index.verb',
         DATA_DIR + '/dict/verb.exc'
       ],
       :adj  => [
-        DATA_DIR + '/dict/index.adj', 
+        DATA_DIR + '/dict/index.adj',
         DATA_DIR + '/dict/adj.exc'
       ],
       :adv  => [
-        DATA_DIR + '/dict/index.adv', 
+        DATA_DIR + '/dict/index.adv',
         DATA_DIR + '/dict/adv.exc'
       ]
     }
 
     MORPHOLOGICAL_SUBSTITUTIONS = {
       :noun => [
-        ['s',    ''   ], 
-        ['ses',  's'  ], 
-        ['ves',  'f'  ], 
+        ['s',    ''   ],
+        ['ses',  's'  ],
+        ['ves',  'f'  ],
         ['xes',  'x'  ],
-        ['zes',  'z'  ], 
-        ['ches', 'ch' ], 
+        ['zes',  'z'  ],
+        ['ches', 'ch' ],
         ['shes', 'sh' ],
-        ['men',  'man'], 
+        ['men',  'man'],
         ['ies',  'y'  ]
       ],
       :verb => [
-        ['s',   '' ], 
-        ['ies', 'y'], 
-        ['es',  'e'], 
+        ['s',   '' ],
+        ['ies', 'y'],
+        ['es',  'e'],
         ['es',  '' ],
-        ['ed',  'e'], 
-        ['ed',  '' ], 
-        ['ing', 'e'], 
+        ['ed',  'e'],
+        ['ed',  '' ],
+        ['ing', 'e'],
         ['ing', '' ]
       ],
       :adj =>  [
-        ['er',  '' ], 
-        ['est', '' ], 
-        ['er',  'e'], 
+        ['er',  '' ],
+        ['est', '' ],
+        ['er',  'e'],
         ['est', 'e']
       ],
       :adv =>  [
@@ -58,7 +58,7 @@ module Lemmatizer
     def initialize(files = WN_FILES)
       @wordlists  = {}
       @exceptions = {}
-      
+
       MORPHOLOGICAL_SUBSTITUTIONS.keys.each do |x|
         @wordlists[x]  = {}
         @exceptions[x] = {}
@@ -79,15 +79,20 @@ module Lemmatizer
         end
 
         return form
-      end 
+      end
 
       each_lemma(form, pos) do |x|
         return x
       end
-      
+
       form
     end
-  
+
+    # Print object only on init
+    def inspect
+      "#{self}"
+    end
+
     private
 
     def open_file(*args)
@@ -142,7 +147,7 @@ module Lemmatizer
           yield x + 'ful'
         end
       else
-      
+
       each_substitutions(form, pos) do|x|
           yield x
         end
