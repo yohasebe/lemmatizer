@@ -1,5 +1,3 @@
-# -*- coding: utf-8; mode: ruby -*-
-
 module Lemmatizer
   class Lemmatizer
     DATA_DIR = File.expand_path('..', File.dirname(__FILE__))

@@ -1,65 +1,75 @@
-# -*- coding: utf-8 -*-
-
 require 'spec_helper'
 require 'lemmatizer'
 
-describe "Lemmatizer" do
-	before do
-		@lemmatizer = Lemmatizer.new
-	end
+describe 'Lemmatizer' do
+  before(:all) do
+    @lemmatizer = Lemmatizer.new
+  end
 
-	describe "#lemma" do
-		it "takes a word form and its part-of-speech symbol (:noun, :verb, :adj, :adv) and then returns its lemma form" do
-			result_n1 = @lemmatizer.lemma("analyses", :noun)
-			result_n1.should == "analysis"
+  describe '#lemma' do
+    it 'takes a noun and returns its lemma' do
+      result_n1 = @lemmatizer.lemma('analyses', :noun)
+      expect(result_n1).to eq('analysis')
 
-      # Lemmatizer leaves alone words that its dictionary does not contain to keep proper names such as "James" intact.
-			result_n2 = @lemmatizer.lemma("MacBooks", :noun)
-			result_n2.should_not == "MacBook"
+      result_n3 = @lemmatizer.lemma('desks', :noun)
+      expect(result_n3).to eq('desk')
+    end
 
-			result_n3 = @lemmatizer.lemma("desks", :noun)
-			result_n3.should == "desk"
+    it 'takes a verb and returns its lemma' do
+      result_v1 = @lemmatizer.lemma('hired', :verb)
+      expect(result_v1).to eq('hire')
 
-			result_v1 = @lemmatizer.lemma("hired", :verb)
-			result_v1.should == "hire"
+      result_v2 = @lemmatizer.lemma('worried', :verb)
+      expect(result_v2).to eq('worry')
 
-			result_v2 = @lemmatizer.lemma("worried", :verb)
-			result_v2.should == "worry"
+      result_v3 = @lemmatizer.lemma('partying', :verb)
+      expect(result_v3).to eq('party')
+    end
 
-			result_v3 = @lemmatizer.lemma("partying", :verb)
-			result_v3.should == "party"
+    it 'takes an adjective and returns its lemma' do
+      result_a1 = @lemmatizer.lemma('better', :adj)
+      expect(result_a1).to eq('good')
 
-			result_a1 = @lemmatizer.lemma("better", :adj)
-			result_a1.should == "good"
+      result_a2 = @lemmatizer.lemma('hotter', :adj)
+      expect(result_a2).to eq('hot')
+    end
 
-			result_a2 = @lemmatizer.lemma("hotter", :adj)
-			result_a2.should == "hot"
+    it 'takes an adverb and returns its lemma' do
+      result_r1 = @lemmatizer.lemma('best', :adv)
+      expect(result_r1).to eq('well')
 
-			result_r1 = @lemmatizer.lemma("best", :adv)
-			result_r1.should == "well"
+      result_r2 = @lemmatizer.lemma('best', :adv)
+      expect(result_r2).not_to eq('good')
+    end
 
-			result_r2 = @lemmatizer.lemma("best", :adv)
-			result_r2.should_not == "good"
-      
-      # Lemmatizer give a result even when no pos is given, by assuming it to be :verb, :noun, :adv, or :adj.
-			result_1 = @lemmatizer.lemma("plays")
-			result_1.should == "play"
+    it 'gives a result when no pos is given' do
+      # Order: :verb, :noun, :adv, or :adj
+      result_1 = @lemmatizer.lemma('plays')
+      expect(result_1).to eq('play')
 
-			result_2 = @lemmatizer.lemma("oxen")
-			result_2.should == "ox"
-      
-			result_3 = @lemmatizer.lemma("higher")
-			result_3.should_not == "high" # since 'higher' is itself contained in the adj list.
-      
-			result_2 = @lemmatizer.lemma("asdfassda") # non-existing word
-			result_2.should == "asdfassda"
-      
-      # test cases for words used in README 
-			result_t1 = @lemmatizer.lemma("fired")
-			result_t1.should == "fire"
+      result_2 = @lemmatizer.lemma('oxen')
+      expect(result_2).to eq('ox')
 
-			result_t2 = @lemmatizer.lemma("slower")
-			result_t2.should == "slow"      
-		end
-	end
+      # 'higher' is itself contained in the adj list.
+      result_3 = @lemmatizer.lemma('higher')
+      expect(result_3).not_to eq('high')
+
+      # Non-existing word
+      result_2 = @lemmatizer.lemma('asdfassda')
+      expect(result_2).to eq('asdfassda')
+
+      # Test cases for words used in README
+      result_t1 = @lemmatizer.lemma('fired')
+      expect(result_t1).to eq('fire')
+
+      result_t2 = @lemmatizer.lemma('slower')
+      expect(result_t2).to eq('slow')
+    end
+
+    it 'leaves alone words that dictionary does not contain' do
+      # Such as 'James' or 'MacBooks'
+      result_n2 = @lemmatizer.lemma('MacBooks', :noun)
+      expect(result_n2).not_to eq('MacBook')
+    end
+  end
 end
