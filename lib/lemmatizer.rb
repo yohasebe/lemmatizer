@@ -1,5 +1,3 @@
-# -*- coding: utf-8; mode: ruby -*-
-
 require 'stringio'
 require 'lemmatizer/version'
 require 'lemmatizer/core_ext'
