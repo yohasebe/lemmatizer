@@ -2,8 +2,11 @@ require 'spec_helper'
 require 'lemmatizer'
 
 describe 'Lemmatizer' do
+
   before(:all) do
     @lemmatizer = Lemmatizer.new
+    user_data = File.join(File.dirname(__FILE__), "user.dict.txt")
+    @lemmatizer_with_userdata = Lemmatizer.new(user_data)
   end
 
   describe '#lemma' do
@@ -70,6 +73,21 @@ describe 'Lemmatizer' do
       # Such as 'James' or 'MacBooks'
       result_n2 = @lemmatizer.lemma('MacBooks', :noun)
       expect(result_n2).not_to eq('MacBook')
+    end
+
+    it 'can load user dict that overrides presets' do
+      # 'MacBooks' -> 'MacBook'
+      result_u1 = @lemmatizer_with_userdata.lemma('MacBooks', :noun)
+      expect(result_u1).to eq('MacBook')
+      # 'higher' -> 'high'
+      result_u2 = @lemmatizer_with_userdata.lemma('higher', :adj)
+      expect(result_u2).to eq('high')
+      # 'highest' -> 'high'
+      result_u3 = @lemmatizer_with_userdata.lemma('higher')
+      expect(result_u3).to eq('high')
+      # check if (unoverridden) preset data is kept intact
+      result_u4 = @lemmatizer_with_userdata.lemma('crying', :verb)
+      expect(result_u4).to eq('cry')
     end
   end
 end

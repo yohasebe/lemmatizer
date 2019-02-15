@@ -50,10 +50,12 @@ module Lemmatizer
         ['est', 'e']
       ],
       :adv =>  [
+      ],
+      :unknown => [
       ]
     }
 
-    def initialize(files = WN_FILES)
+    def initialize(dict = nil)
       @wordlists  = {}
       @exceptions = {}
 
@@ -61,12 +63,12 @@ module Lemmatizer
         @wordlists[x]  = {}
         @exceptions[x] = {}
       end
-
-      if files
-        files.each_pair do |pos, pair|
-          load_wordnet_files(pos, pair[0], pair[1])
-        end
+      
+      WN_FILES.each_pair do |pos, pair|
+        load_wordnet_files(pos, pair[0], pair[1])
       end
+
+      load_provided_dict(dict) if dict
     end
 
     def lemma(form, pos = nil)
@@ -150,6 +152,37 @@ module Lemmatizer
           yield x
         end
       end
+    end
+
+    def str_to_pos(str)
+      case str
+      when "n", "noun"
+        return :noun
+      when "v", "verb"
+        return :noun
+      when "a", "j", "adjective", "adj"
+        return :adj
+      when "r", "adverb", "adv"
+        return :adv
+      else
+        return :unknown
+      end
+    end
+
+    def load_provided_dict(dict)
+      num_lex_added = 0
+      open_file(dict) do |io|
+        io.each_line do |line|
+          # pos must be either n|v|r|a or noun|verb|adverb|adjective
+          p, w, s = line.split(/\s+/)
+          pos = str_to_pos(p)
+          if @wordlists[pos]
+            @wordlists[pos][w] = s
+            num_lex_added += 1
+          end
+        end
+      end
+      puts "#{num_lex_added} lexical items added from dict file provided"
     end
   end
 end
