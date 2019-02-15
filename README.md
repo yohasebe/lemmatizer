@@ -48,13 +48,13 @@ Supplying with user dict
 -----------
 ```ruby
 # You can supply files with additional dict data consisting of lines in the format of <pos>\s+<form>\s+<lemma>.
-# The data in user supplied files overrides the preset data
+# The data in user supplied files overrides the preset data. 
 
------- sample.dict.txt -----
-adj   higher   high
-adj   highest  high
-noun  MacBooks MacBook
-----------------------------
+# ------ sample.dict.txt (don't include hash symbol) -----
+# adj   higher   high
+# adj   highest  high
+# noun  MacBooks MacBook
+# --------------------------------------------------------
 
 lem = Lemmatizer.new("sample.dict.txt")
 p lem.lemma("higher", :adj)    # => "high"
