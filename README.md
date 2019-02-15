@@ -57,8 +57,8 @@ Supplying with user dict
 # --------------------------------------------------------
 
 lem = Lemmatizer.new("sample.dict.txt")
-p lem.lemma("higher", :adj)    # => "high"
-p lem.lemma("highest", :adj)   # => "high"
+p lem.lemma("higher", :adj)     # => "high"
+p lem.lemma("highest", :adj)    # => "high"
 p lem.lemma("MacBooks", :noun)  # => "MacBook"
 ```
 
