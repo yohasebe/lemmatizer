@@ -5,8 +5,10 @@ describe 'Lemmatizer' do
 
   before(:all) do
     @lemmatizer = Lemmatizer.new
-    user_data = File.join(File.dirname(__FILE__), "user.dict.txt")
-    @lemmatizer_with_userdata = Lemmatizer.new(user_data)
+    user_data1 = File.join(File.dirname(__FILE__), "user.dict1.txt")
+    user_data2 = File.join(File.dirname(__FILE__), "user.dict2.txt")
+    @lemmatizer_single_userdict = Lemmatizer.new(user_data1)
+    @lemmatizer_multiple_userdicts = Lemmatizer.new([user_data1, user_data2])
   end
 
   describe '#lemma' do
@@ -75,19 +77,27 @@ describe 'Lemmatizer' do
       expect(result_n2).not_to eq('MacBook')
     end
 
-    it 'can load user dict that overrides presets' do
+    it 'can load a user dict that overrides presets' do
       # 'MacBooks' -> 'MacBook'
-      result_u1 = @lemmatizer_with_userdata.lemma('MacBooks', :noun)
+      result_u1 = @lemmatizer_single_userdict.lemma('MacBooks', :noun)
       expect(result_u1).to eq('MacBook')
+      result_u2 = @lemmatizer_single_userdict.lemma('crying', :verb)
+      expect(result_u2).to eq('cry')
+    end
+
+    it 'can load uder dicts that override presets' do
+      # 'MacBooks' -> 'MacBook'
+      result_ud1 = @lemmatizer_multiple_userdicts.lemma('MacBooks', :noun)
+      expect(result_ud1).to eq('MacBook')
       # 'higher' -> 'high'
-      result_u2 = @lemmatizer_with_userdata.lemma('higher', :adj)
-      expect(result_u2).to eq('high')
+      result_ud2 = @lemmatizer_multiple_userdicts.lemma('higher', :adj)
+      expect(result_ud2).to eq('high')
       # 'highest' -> 'high'
-      result_u3 = @lemmatizer_with_userdata.lemma('higher')
-      expect(result_u3).to eq('high')
+      result_ud3 = @lemmatizer_multiple_userdicts.lemma('higher')
+      expect(result_ud3).to eq('high')
       # check if (unoverridden) preset data is kept intact
-      result_u4 = @lemmatizer_with_userdata.lemma('crying', :verb)
-      expect(result_u4).to eq('cry')
+      result_ud4 = @lemmatizer_multiple_userdicts.lemma('crying', :verb)
+      expect(result_ud4).to eq('cry')
     end
   end
 end

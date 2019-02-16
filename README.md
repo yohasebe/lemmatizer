@@ -41,26 +41,33 @@ p lem.lemma("MacBooks", :noun) # => "MacBooks"
 p lem.lemma("higher", :adj) # => "higher" not "high"!
 
 # The above has to happen because "higher" is itself an entry word listed in dict/index.adj .
-# Modify dict/index.{noun|verb|adj|adv} if necessary.
+# To fix this, modify the original dict directly (lib/dict/index.{noun|verb|adj|adv}) 
+# or supply with custom dict files (recommended).
 ```
 
 Supplying with user dict
 -----------
 ```ruby
-# You can supply files with additional dict data consisting of lines in the format of <pos>\s+<form>\s+<lemma>.
-# The data in user supplied files overrides the preset data. 
+# You can supply custom dict files consisting of lines in the format of <pos>\s+<form>\s+<lemma>.
+# The data in user supplied files overrides the preset data. Here's the sample. 
 
-# ------ sample.dict.txt (don't include hash symbol) -----
+# --- sample.dict.txt (don't include hash symbol on the left) ---
 # adj   higher   high
 # adj   highest  high
 # noun  MacBooks MacBook
-# --------------------------------------------------------
+# ---------------------------------------------------------------
 
 lem = Lemmatizer.new("sample.dict.txt")
 # => 3 lexical items added from dict file provided
+
 p lem.lemma("higher", :adj)     # => "high"
 p lem.lemma("highest", :adj)    # => "high"
 p lem.lemma("MacBooks", :noun)  # => "MacBook"
+
+# The argument to Lemmatizer.new can be either of the following:
+# 1) a path string to a dict file (e.g. "/path/to/dict.txt")
+# 2) an array of paths to dict files (e.g. ["./dict/noun.txt", "./dict/verb.txt"])
+
 ```
 
 Author

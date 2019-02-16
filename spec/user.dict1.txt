@@ -1,0 +1,3 @@
+noun MacBooks MacBook
+noun iPhones  iPhone
+noun iPads    iPad

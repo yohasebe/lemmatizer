@@ -1,5 +1,0 @@
-n MacBooks MacBook
-n iPhones iPhone
-n iPads iPad
-adj higher high
-adj highest high

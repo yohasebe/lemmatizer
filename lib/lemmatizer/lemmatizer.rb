@@ -68,7 +68,11 @@ module Lemmatizer
         load_wordnet_files(pos, pair[0], pair[1])
       end
 
-      load_provided_dict(dict) if dict
+      if dict
+        [dict].flatten.each do |d|
+          load_provided_dict(d)
+        end
+      end
     end
 
     def lemma(form, pos = nil)
@@ -182,7 +186,7 @@ module Lemmatizer
           end
         end
       end
-      puts "#{num_lex_added} lexical items added from dict file provided"
+      puts "#{num_lex_added} items added from #{File.basename dict}"
     end
   end
 end
