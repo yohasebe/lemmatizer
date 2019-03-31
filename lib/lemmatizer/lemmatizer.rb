@@ -186,7 +186,7 @@ module Lemmatizer
           end
         end
       end
-      puts "#{num_lex_added} items added from #{File.basename dict}"
+      # puts "#{num_lex_added} items added from #{File.basename dict}"
     end
   end
 end
