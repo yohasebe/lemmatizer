@@ -58,7 +58,6 @@ Supplying with user dict
 # ---------------------------------------------------------------
 
 lem = Lemmatizer.new("sample.dict1.txt")
-# => 3 items added from dict file provided
 
 p lem.lemma("higher", :adj)     # => "high"
 p lem.lemma("highest", :adj)    # => "high"
@@ -86,7 +85,6 @@ Resolving abbreviations
 #    but not with original expressions.
 
 lem = Lemmatizer.new("sample.dict2.txt")
-# => 2 items added from dict file provided
 
 p lem.lemma("utexas", :abbr) # => "University of Texas"
 p lem.lemma("mit", :abbr)    # => "Massachusetts Institute of Technology"
