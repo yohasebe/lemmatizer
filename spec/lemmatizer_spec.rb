@@ -7,8 +7,9 @@ describe 'Lemmatizer' do
     @lemmatizer = Lemmatizer.new
     user_data1 = File.join(File.dirname(__FILE__), "user.dict1.txt")
     user_data2 = File.join(File.dirname(__FILE__), "user.dict2.txt")
+    user_data3 = File.join(File.dirname(__FILE__), "user.dict3.txt")
     @lemmatizer_single_userdict = Lemmatizer.new(user_data1)
-    @lemmatizer_multiple_userdicts = Lemmatizer.new([user_data1, user_data2])
+    @lemmatizer_multiple_userdicts = Lemmatizer.new([user_data2, user_data3])
   end
 
   describe '#lemma' do
@@ -48,7 +49,7 @@ describe 'Lemmatizer' do
     end
 
     it 'gives a result when no pos is given' do
-      # Order: :verb, :noun, :adv, or :adj
+      # Order: :verb, :noun, :adv, :adj, or :abbr
       result_1 = @lemmatizer.lemma('plays')
       expect(result_1).to eq('play')
 
@@ -81,23 +82,36 @@ describe 'Lemmatizer' do
       # 'MacBooks' -> 'MacBook'
       result_u1 = @lemmatizer_single_userdict.lemma('MacBooks', :noun)
       expect(result_u1).to eq('MacBook')
-      result_u2 = @lemmatizer_single_userdict.lemma('crying', :verb)
-      expect(result_u2).to eq('cry')
+      # 'iPhones' -> 'iPhone'
+      result_u2 = @lemmatizer_single_userdict.lemma('iPhones', :noun)
+      expect(result_u2).to eq('iPhone')
     end
 
     it 'can load uder dicts that override presets' do
-      # 'MacBooks' -> 'MacBook'
-      result_ud1 = @lemmatizer_multiple_userdicts.lemma('MacBooks', :noun)
-      expect(result_ud1).to eq('MacBook')
       # 'higher' -> 'high'
-      result_ud2 = @lemmatizer_multiple_userdicts.lemma('higher', :adj)
-      expect(result_ud2).to eq('high')
-      # 'highest' -> 'high'
       result_ud3 = @lemmatizer_multiple_userdicts.lemma('higher')
       expect(result_ud3).to eq('high')
       # check if (unoverridden) preset data is kept intact
       result_ud4 = @lemmatizer_multiple_userdicts.lemma('crying', :verb)
       expect(result_ud4).to eq('cry')
+      # 'I'm' -> 'I am'
+      result_ud5 = @lemmatizer_multiple_userdicts.lemma("I'm", :abbr)
+      expect(result_ud5).to eq('I am')
+      # 'You're' -> 'you are'
+      result_ud6 = @lemmatizer_multiple_userdicts.lemma("You're", :abbr)
+      expect(result_ud6).to eq("you are")
+      # 'you're' -> 'you are'
+      result_ud7 = @lemmatizer_multiple_userdicts.lemma("you're", :abbr)
+      expect(result_ud7).to eq("you are")
+      # 'h2s' -> 'Hydrogen Sulphide'
+      result_ud8 = @lemmatizer_multiple_userdicts.lemma("h2s", :abbr)
+      expect(result_ud8).to eq("Hydrogen Sulphide")
+      # 'utexas' -> 'University of Texas'
+      result_ud9 = @lemmatizer_multiple_userdicts.lemma("utexas", :abbr)
+      expect(result_ud9).to eq("University of Texas")
+      # 'mit' -> 'Massachusetts Institute of Technology'
+      result_ud10 = @lemmatizer_multiple_userdicts.lemma("mit", :abbr)
+      expect(result_ud10).to eq("Massachusetts Institute of Technology")
     end
   end
 end

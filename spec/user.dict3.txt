@@ -1,0 +1,6 @@
+abbr I'm      "I am"
+abbr you're   "you are"
+abbr You're   "you are"
+abbr h2s      "Hydrogen Sulphide"
+abbr utexas   University of Texas
+abbr mit      Massachusetts Institute of Technology

@@ -1,3 +1,4 @@
+
 module Lemmatizer
   class Lemmatizer
     DATA_DIR = File.expand_path('..', File.dirname(__FILE__))
@@ -51,6 +52,8 @@ module Lemmatizer
       ],
       :adv =>  [
       ],
+      :abbr =>  [
+      ],
       :unknown => [
       ]
     }
@@ -77,7 +80,7 @@ module Lemmatizer
 
     def lemma(form, pos = nil)
       unless pos
-        [:verb, :noun, :adj, :adv].each do |p|
+        [:verb, :noun, :adj, :adv, :abbr].each do |p|
           result = lemma(form, p)
           return result unless result == form
         end
@@ -168,6 +171,8 @@ module Lemmatizer
         return :adj
       when "r", "adverb", "adv"
         return :adv
+      when "b", "abbrev", "abbr", "abr"
+        return :abbr
       else
         return :unknown
       end
@@ -178,10 +183,19 @@ module Lemmatizer
       open_file(dict) do |io|
         io.each_line do |line|
           # pos must be either n|v|r|a or noun|verb|adverb|adjective
-          p, w, s = line.split(/\s+/)
+          p, w, s = line.split(/\s+/, 3)
           pos = str_to_pos(p)
+          word = w
+          substitute = s.strip
+          if /\A\"(.*)\"\z/ =~ substitute
+            substitute = $1
+          end
+          if /\A\'(.*)\'\z/ =~ substitute
+            substitute = $1
+          end
+          next unless (pos && word && substitute)
           if @wordlists[pos]
-            @wordlists[pos][w] = s
+            @wordlists[pos][word] = substitute
             num_lex_added += 1
           end
         end
