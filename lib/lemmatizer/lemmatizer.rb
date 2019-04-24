@@ -166,7 +166,7 @@ module Lemmatizer
       when "n", "noun"
         return :noun
       when "v", "verb"
-        return :noun
+        return :verb
       when "a", "j", "adjective", "adj"
         return :adj
       when "r", "adverb", "adv"
