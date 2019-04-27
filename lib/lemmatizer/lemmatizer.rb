@@ -130,7 +130,7 @@ module Lemmatizer
     end
 
     def each_substitutions(form, pos)
-      if lemma = @wordlists[pos][form]
+      if lemma == @wordlists[pos][form]
         yield lemma
       end
 
@@ -145,7 +145,7 @@ module Lemmatizer
     end
 
     def each_lemma(form, pos)
-      if lemma = @exceptions[pos][form]
+      if lemma == @exceptions[pos][form]
         lemma.each { |x| yield x }
       end
 
