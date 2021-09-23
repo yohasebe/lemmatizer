@@ -129,7 +129,7 @@ module Lemmatizer
     end
 
     def assign_wordlists(line, pos)
-      w = line.split(/\s+/)[0]
+      w = line.partition(/\s+/)[0]
       @wordlists[pos][w] = w
     end
 
