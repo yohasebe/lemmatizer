@@ -66,7 +66,7 @@ module Lemmatizer
         @wordlists[x]  = {}
         @exceptions[x] = {}
       end
-      
+
       WN_FILES.each_pair do |pos, pair|
         load_wordnet_files(pos, pair[0], pair[1])
       end
@@ -115,8 +115,7 @@ module Lemmatizer
     def load_wordnet_files(pos, list, exc)
       open_file(list) do |io|
         io.each_line do |line|
-          w = line.split(/\s+/)[0]
-          @wordlists[pos][w] = w
+          assign_wordlists(line, pos)
         end
       end
 
@@ -127,6 +126,11 @@ module Lemmatizer
           @exceptions[pos][w] << s
         end
       end
+    end
+
+    def assign_wordlists(line, pos)
+      w = line.partition(/\s+/)[0]
+      @wordlists[pos][w] = w
     end
 
     def each_substitutions(form, pos)

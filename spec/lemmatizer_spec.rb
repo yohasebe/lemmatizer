@@ -113,5 +113,24 @@ describe 'Lemmatizer' do
       result_ud10 = @lemmatizer_multiple_userdicts.lemma("mit", :abbr)
       expect(result_ud10).to eq("Massachusetts Institute of Technology")
     end
+
+    context 'performance' do
+      describe '#assign_wordlists' do
+        let!(:lemmatizer) do
+          klass = Class.new(Lemmatizer::Lemmatizer) do
+            def assign_wordlists(line, pos)
+              w = line.split(/\s+/)[0]
+              @wordlists[pos][w] = w
+            end
+          end
+          klass.new
+        end
+        let(:wordlists_instance) { lambda { |source| source.instance_variable_get("@wordlists") } }
+        let(:lem) { 'anything' }
+
+        it { expect { @lemmatizer.lemma(lem) }.to perform_faster_than { lemmatizer.lemma(lem) }.warmup(2).at_most(10).times }
+        it { expect(wordlists_instance[@lemmatizer]).to eq(wordlists_instance[lemmatizer]) }
+      end
+    end
   end
 end
